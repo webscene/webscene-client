@@ -1,0 +1,27 @@
+group 'org.webscene'
+version '0.1-SNAPSHOT'
+
+buildscript {
+    ext {
+        KOTLIN_VER = '1.1.0'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VER"
+    }
+}
+
+apply plugin: 'kotlin2js'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$KOTLIN_VER"
+}
+
+// TODO: Figure out how to create a Kotlin JS library.
