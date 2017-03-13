@@ -1,4 +1,4 @@
-# Webscene Client (webscene-client)
+# Web Scene Client (webscene-client)
 
 Client side library for building and managing web UIs for Kotlin based projects.
 

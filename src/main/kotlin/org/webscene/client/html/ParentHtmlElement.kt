@@ -5,16 +5,23 @@ import kotlin.browser.document
 import kotlin.dom.createElement
 
 /**
- * Creates a parent HTML element.
+ * A parent HTML element which can contain children (HTML elements).
+ * @author Nick Apperley
  */
-open class ParentHtmlElement : ParentTag {
+open class ParentHtmlElement : ParentHtmlTag {
     override var id = ""
     val classes = mutableListOf<String>()
     override lateinit var tagName: String
     override val attributes = mutableMapOf<String, String>()
     override var txtContent = ""
-    override val children = mutableListOf<Tag>()
+    override val children = mutableListOf<HtmlTag>()
 
+    /**
+     * Creates a new parent HTML element in [ParentHtmlElement] that can contain child HTML elements.
+     * @param tagName Name of the tag.
+     * @param init Initialisation block for setting up the HTML element.
+     * @return A new HTML element.
+     */
     fun parentHtmlElement(tagName: String, init: ParentHtmlElement.() -> Unit): ParentHtmlElement {
         val parentHtmlElement = ParentHtmlElement()
 
@@ -24,6 +31,12 @@ open class ParentHtmlElement : ParentTag {
         return parentHtmlElement
     }
 
+    /**
+     * Creates a new HTML element in [ParentHtmlElement] which doesn't have any child HTML elements.
+     * @param tagName Name of the tag.
+     * @param init Initialisation block for setting up the HTML element.
+     * @return A new HTML element.
+     */
     fun htmlElement(tagName: String, init: HtmlElement.() -> Unit): HtmlElement {
         val htmlElement = HtmlElement()
 

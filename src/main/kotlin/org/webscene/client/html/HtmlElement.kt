@@ -6,9 +6,10 @@ import kotlin.dom.appendText
 import kotlin.dom.createElement
 
 /**
- * Creates a HTML element.
+ * Basic HTML element which doesn't contain any children (HTML elements).
+ * @author Nick Apperley
  */
-open class HtmlElement : Tag {
+open class HtmlElement : HtmlTag {
     override var id = ""
     val classes = mutableListOf<String>()
     override val attributes = mutableMapOf<String, String>()
