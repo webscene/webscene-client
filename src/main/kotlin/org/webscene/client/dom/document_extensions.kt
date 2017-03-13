@@ -12,7 +12,8 @@ import kotlin.browser.document
 
 /**
  * Update an existing DOM element by its ID.
- * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the DOM element.
+ * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the
+ * [DOM element][org.w3c.dom.Element].
  */
 fun Document.updateElementById(init: () -> HtmlTag) {
     val tag = init()
@@ -22,11 +23,18 @@ fun Document.updateElementById(init: () -> HtmlTag) {
 }
 
 /**
- * Retrieves all DOM elements that match [tagName].
+ * Retrieves all DOM [elements][org.w3c.dom.Element] that match [tagName].
  * @param tagName Name of the tag.
- * @return A list of all DOM elements that match [tagName].
+ * @return A list of all DOM [elements][org.w3c.dom.Element] that match [tagName].
  */
-fun Document.findAllElementsByName(tagName: String) = document.getElementsByTagName(tagName).asList()
+fun Document.findAllElementsByTagName(tagName: String) = document.getElementsByTagName(tagName).asList()
+
+/**
+ * Retrieves all DOM [nodes][org.w3c.dom.Node] that match the [name attribute][name].
+ * @param name Value of the name attribute.
+ * @return A list of all DOM [nodes][org.w3c.dom.Node] that match the [name attribute][name].
+ */
+fun Document.findAllNodesByName(name: String) = document.getElementsByName(name).asList()
 
 /**
  * Retrieves the [DOM element][org.w3c.dom.Element] that matches [id].

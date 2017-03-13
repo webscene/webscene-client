@@ -19,13 +19,13 @@ interface HtmlTag {
     /**
      * Creates a text representation of HTML.
      * @param indent Number of spaces to use for indenting HTML elements.
-     * @return HTML as text.
+     * @return HTML as a [String].
      */
     fun createText(indent: Int = 2): String
 
     /**
-     * Converts to a [DOM element][org.w3c.dom.Element].
-     * @return A new DOM element.
+     * Converts to a [DOM element][Element].
+     * @return A new [DOM element][Element].
      */
     fun toDomElement(): Element
 }

@@ -6,7 +6,7 @@ import kotlin.dom.appendText
 import kotlin.dom.createElement
 
 /**
- * Basic HTML element which doesn't contain any children (HTML elements).
+ * Basic HTML element which doesn't contain any children.
  * @author Nick Apperley
  */
 open class HtmlElement : HtmlTag {
