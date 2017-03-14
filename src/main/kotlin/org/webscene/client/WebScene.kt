@@ -1,10 +1,11 @@
 package org.webscene.client
 
+import org.w3c.dom.Element
 import org.w3c.xhr.JSON
 import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
 import org.webscene.client.comms.HttpMethod
-import org.webscene.client.dom.findAllNodesByName
+import org.webscene.client.dom.findAllElementsByClassNames
 import org.webscene.client.dom.findAllElementsByTagName
 import org.webscene.client.dom.findElementById
 import org.webscene.client.dom.updateElementById
@@ -29,18 +30,11 @@ object WebScene {
         fun allElementsByTagName(tagName: String) = document.findAllElementsByTagName(tagName)
 
         /**
-         * Retrieves all DOM [nodes][org.w3c.dom.Node] that match the [name attribute][name].
-         * @param name Value of the name attribute.
-         * @return A list of all DOM [nodes][org.w3c.dom.Node] that match the [name attribute][name].
+         * Retrieves the [DOM element][Element] that matches [id].
+         * @param id Unique identifier for the [DOM element][Element].
+         * @return A [DOM element][Element] if there is a match.
          */
-        fun allNodesByName(name: String) = document.findAllNodesByName(name)
-
-        /**
-         * Retrieves the [DOM element][org.w3c.dom.Element] that matches [id].
-         * @param id Unique identifier for the [DOM element][org.w3c.dom.Element].
-         * @return A [DOM element][org.w3c.dom.Element] if there is a match.
-         */
-        fun elementById(id: String) = document.findElementById(id)
+        fun elementById(id: String): Element? = document.findElementById(id)
 
         /**
          * Obtains the unique identifier for the web page (pageId).
@@ -51,6 +45,13 @@ object WebScene {
 
             return if (metaElements.isNotEmpty()) metaElements[0].getAttribute("pageId") ?: "" else ""
         }
+
+        /**
+         * Retrieves all DOM [elements][Element] that match one or more [class names][classNames].
+         * @param classNames One or more names of classes.
+         * @return A list of all [DOM elements][Element] that match [classNames].
+         */
+        fun allElementsByClassNames(vararg classNames: String) = document.findAllElementsByClassNames(*classNames)
     }
 
     /**
@@ -95,25 +96,27 @@ object WebScene {
     fun objectsToJsonText(vararg pairs: Pair<String, *>) = if (pairs.isNotEmpty()) JSON.stringify(json(*pairs)) else ""
 
     /**
-     * Creates a [HTTP/S client][XMLHttpRequest] to enable communication with a HTTP/S server.
-     * @param method [HTTP method][HttpMethod] to use.
+     * Creates a [HTTP/S client][XMLHttpRequest] to enable communication with a HTTP/S server. The request header
+     * **content-type** is set to **JSON**.
+     * @param method [HTTP/S method][HttpMethod] to use.
      * @param url Specific HTTP/S path to use.
-     * @param contentType Type of content to use for both the HTTP/S request and response.
+     * @param reqData Request data (an array of [Pair]) to send to the server.
      * @param sendNow The client communicates immediately with the server if set to **true**.
-     * @param init Initialisation block for setting up the [HTTP client][XMLHttpRequest].
-     * @return A new [HTTP client][XMLHttpRequest].
+     * @param init Initialisation block for setting up the [HTTP/S client][XMLHttpRequest].
+     * @return A new [HTTP/S client][XMLHttpRequest].
      */
     fun httpClient(method: HttpMethod,
                    url: String,
-                   contentType: XMLHttpRequestResponseType = XMLHttpRequestResponseType.JSON,
+                   reqData: Array<Pair<String, *>> = arrayOf(),
                    sendNow: Boolean = false,
                    init: XMLHttpRequest.() -> Unit): XMLHttpRequest {
         val client = XMLHttpRequest()
 
         client.init()
-        client.setRequestHeader("content-type", contentType.toString())
+        client.setRequestHeader("content-type", XMLHttpRequestResponseType.JSON.toString())
         client.open(method = method.txt, url = url)
-        if (sendNow) client.send()
+        if (sendNow && reqData.isEmpty()) client.send()
+        else if (sendNow && reqData.isNotEmpty()) client.send(objectsToJsonText(*reqData))
         return client
     }
 }

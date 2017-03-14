@@ -1,5 +1,6 @@
 package org.webscene.client.comms
 
+@Suppress("unused")
 enum class ContentType(val txt: String) {
     HTML("text/html"),
     PLAIN_TEXT("text/plain"),
