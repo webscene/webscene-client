@@ -12,7 +12,7 @@ import kotlin.browser.document
 // Author - Nick Apperley
 
 /**
- * Update an existing DOM element by its ID.
+ * Updates an existing DOM element by its ID.
  * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the
  * [DOM element][Element].
  */
@@ -21,6 +21,40 @@ fun Document.updateElementById(init: () -> HtmlTag) {
     val domElement = document.findElementById(htmlTag.id)
 
     domElement?.replaceWith(htmlTag.toDomElement())
+}
+
+/**
+ * Removes an existing DOM element by its ID.
+ * @param id Unique identifier of the DOM element.
+ */
+fun Document.removeElementById(id: String) {
+    val domElement = document.findElementById(id)
+
+    domElement?.remove()
+}
+
+/**
+ * Prepends a [DOM element][Element] to the **body** element.
+ * @param domElement The DOM element to prepend.
+ */
+fun Document.prependElementToBody(domElement: Element) {
+    document.body?.prepend(domElement)
+}
+
+/**
+ * Prepends a [DOM element][Element] to the **head** element.
+ * @param domElement The DOM element to prepend.
+ */
+fun Document.prependElementToHead(domElement: Element) {
+    document.head?.prepend(domElement)
+}
+
+/**
+ * Appends a [DOM element][Element] to the **head** element.
+ * @param domElement The DOM element to append.
+ */
+fun Document.appendElementToHead(domElement: Element) {
+    document.head?.append(domElement)
 }
 
 /**

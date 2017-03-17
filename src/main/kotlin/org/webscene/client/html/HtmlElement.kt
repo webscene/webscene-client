@@ -11,6 +11,9 @@ import kotlin.dom.createElement
  */
 open class HtmlElement : HtmlTag {
     override var id = ""
+    /**
+     * Contains class names.
+     */
     val classes = mutableListOf<String>()
     override val attributes = mutableMapOf<String, String>()
     override lateinit var tagName: String
@@ -39,12 +42,15 @@ open class HtmlElement : HtmlTag {
         }
     }
 
-    override fun createText(indent: Int) = buildString {
+    override fun createText(indent: Int): String = buildString {
         (1..indent).forEach { append(" ") }
         append("<$tagName${createClasses()}${createAttributes()}")
         if (isClosed) append(" />") else append(">$txtContent</$tagName>")
     }
 
+    /**
+     * Changes the text to include in the HTML element.
+     */
     operator fun String.unaryPlus() {
         txtContent = this
     }

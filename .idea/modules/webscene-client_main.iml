@@ -10,8 +10,9 @@
             </option>
             <option name="k2jsCompilerArguments">
               <K2JSCompilerArguments>
-                <option name="outputFile" value="$MODULE_DIR$/../../build/classes/main/webscene-client_main.js" />
+                <option name="outputFile" value="$MODULE_DIR$/../../web/webscene-client.js" />
                 <option name="noStdlib" value="true" />
+                <option name="sourceMap" value="true" />
                 <option name="metaInfo" value="true" />
                 <option name="target" value="v5" />
                 <option name="moduleKind" value="plain" />
@@ -64,7 +65,7 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../build/classes/main" />
+    <output url="file://$MODULE_DIR$/../../web" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />

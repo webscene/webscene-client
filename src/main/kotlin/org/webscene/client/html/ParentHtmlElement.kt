@@ -10,19 +10,22 @@ import kotlin.dom.createElement
  */
 open class ParentHtmlElement : ParentHtmlTag {
     override var id = ""
+    /**
+     * Contains class names.
+     */
     val classes = mutableListOf<String>()
     override lateinit var tagName: String
     override val attributes = mutableMapOf<String, String>()
     override var txtContent = ""
     override val children = mutableListOf<HtmlTag>()
 
-    @Suppress("unused")
-            /**
+    /**
      * Creates a new parent HTML element in [ParentHtmlElement] that can contain child HTML elements.
      * @param tagName Name of the tag.
      * @param init Initialisation block for setting up the HTML element.
              * @return A new [parent HTML element][ParentHtmlElement].
      */
+    @Suppress("unused")
     fun parentHtmlElement(tagName: String, init: ParentHtmlElement.() -> Unit): ParentHtmlElement {
         val parentHtmlElement = ParentHtmlElement()
 
@@ -32,13 +35,13 @@ open class ParentHtmlElement : ParentHtmlTag {
         return parentHtmlElement
     }
 
-    @Suppress("unused")
-            /**
+    /**
      * Creates a new HTML element in [ParentHtmlElement] which doesn't have any child HTML elements.
      * @param tagName Name of the tag.
      * @param init Initialisation block for setting up the HTML element.
              * @return A new [HTML element][HtmlElement].
      */
+    @Suppress("unused")
     fun htmlElement(tagName: String, init: HtmlElement.() -> Unit): HtmlElement {
         val htmlElement = HtmlElement()
 
@@ -93,6 +96,9 @@ open class ParentHtmlElement : ParentHtmlTag {
         append("</$tagName>")
     }
 
+    /**
+     * Changes the text to include in the parent HTML element.
+     */
     operator fun String.unaryPlus() {
         txtContent = this
     }

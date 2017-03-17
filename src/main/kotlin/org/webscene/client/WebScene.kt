@@ -5,22 +5,22 @@ import org.w3c.xhr.JSON
 import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
 import org.webscene.client.comms.HttpMethod
-import org.webscene.client.dom.findAllElementsByClassNames
-import org.webscene.client.dom.findAllElementsByTagName
-import org.webscene.client.dom.findElementById
-import org.webscene.client.dom.updateElementById
+import org.webscene.client.dom.*
 import org.webscene.client.html.HtmlElement
 import org.webscene.client.html.HtmlTag
 import org.webscene.client.html.ParentHtmlElement
 import kotlin.browser.document
 import kotlin.js.json
 
-@Suppress("unused")
 /**
  * Provides general web view functionality.
  * @author Nick Apperley
  */
+@Suppress("unused")
 object WebScene {
+    /**
+     * Contains common functionality for doing a DOM query.
+     */
     object DomQuery {
         /**
          * Retrieves all DOM elements that match [tagName].
@@ -55,6 +55,41 @@ object WebScene {
     }
 
     /**
+     * Contains common functionality for editing the DOM.
+     */
+    object DomEditor {
+        /**
+         * Prepends a [DOM element][Element] to the **body** element.
+         * @param domElement The DOM element to prepend.
+         */
+        fun prependElementToBody(domElement: Element) = document.prependElementToBody(domElement)
+
+        /**
+         * Prepends a [DOM element][Element] to the **head** element.
+         * @param domElement The DOM element to prepend.
+         */
+        fun prependElementToHead(domElement: Element) = document.prependElementToHead(domElement)
+
+        /**
+         * Appends a [DOM element][Element] to the **head** element.
+         * @param domElement The DOM element to append.
+         */
+        fun appendElementToHead(domElement: Element) = document.appendElementToHead(domElement)
+
+        /**
+         * Updates an existing DOM element by its ID.
+         * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the DOM element.
+         */
+        fun updateElementById(init: () -> HtmlTag) = document.updateElementById(init)
+
+        /**
+         * Removes an existing DOM element by its ID.
+         * @param id Unique identifier of the DOM element.
+         */
+        fun removeElementById(id: String) = document.removeElementById(id)
+    }
+
+    /**
      * Creates a new parent HTML element that can contain child HTML elements.
      * @param tagName Name of the tag.
      * @param init Initialisation block for setting up the HTML element.
@@ -83,12 +118,6 @@ object WebScene {
     }
 
     /**
-     * Update an existing DOM element by its ID.
-     * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the DOM element.
-     */
-    fun updateDomElementById(init: () -> HtmlTag) = document.updateElementById(init)
-
-    /**
      * Converts Kotlin objects to JSON text.
      * @param pairs One or more [Pair] objects consisting of *[Key][String], Any*.
      * @return JSON as a [String] if [pairs] isn't empty otherwise a empty [String].
@@ -96,8 +125,8 @@ object WebScene {
     fun objectsToJsonText(vararg pairs: Pair<String, *>) = if (pairs.isNotEmpty()) JSON.stringify(json(*pairs)) else ""
 
     /**
-     * Creates a [HTTP/S client][XMLHttpRequest] to enable communication with a HTTP/S server. The request header
-     * **content-type** is set to **JSON**.
+     * Creates a [HTTP/S client][XMLHttpRequest] to enable communication with a HTTP/S server. The request
+     * header **content-type** is set to **JSON**.
      * @param method [HTTP/S method][HttpMethod] to use.
      * @param url Specific HTTP/S path to use.
      * @param reqData Request data (an array of [Pair]) to send to the server.
@@ -112,9 +141,9 @@ object WebScene {
                    init: XMLHttpRequest.() -> Unit): XMLHttpRequest {
         val client = XMLHttpRequest()
 
+        client.open(method = method.txt, url = url)
         client.init()
         client.setRequestHeader("content-type", XMLHttpRequestResponseType.JSON.toString())
-        client.open(method = method.txt, url = url)
         if (sendNow && reqData.isEmpty()) client.send()
         else if (sendNow && reqData.isNotEmpty()) client.send(objectsToJsonText(*reqData))
         return client
