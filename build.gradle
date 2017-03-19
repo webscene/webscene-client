@@ -68,3 +68,16 @@ task createDokkaJar(type: Jar, dependsOn: dokka) {
     classifier 'javadoc'
     from dokka.outputDirectory
 }
+
+task createSourceJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task createAllJarFiles(dependsOn: [jar, createSourceJar, createDokkaJar]) {
+    println("Creating JAR files (library, sources and documentation)...")
+}
+
+createAllJarFiles.doLast {
+    println("Finished creating JAR files.")
+}
