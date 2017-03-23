@@ -6,7 +6,7 @@ import org.w3c.dom.HTMLElement
 import org.webscene.client.html.HtmlElement
 import org.webscene.client.html.ParentHtmlElement
 
-// Extensions for the org.w3c.dom.HTMLElement.
+// Extensions for org.w3c.dom.HTMLElement.
 // Author - Nick Apperley
 
 /**

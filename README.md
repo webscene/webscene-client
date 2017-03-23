@@ -8,11 +8,10 @@ Client side library for building and managing web UIs for Kotlin based projects.
 To install the library do the following:
 
 1. Clone the **webscene/webscene-client** Git repository from GitHub
-2. Import the cloned repository using IntelliJ
-3. Generate the documentation by running the **createDokkaJar** Gradle task
-4. Create the JAR file by running the **jar** Gradle task
-5. Copy the contents of **build/libs** directory to this directory in your project: **libs/org/webscene/webscene-client/version**
-6. Assuming Gradle is used in your project edit your **build.gradle** file, and insert the following:
+2. Import the cloned repository into IntelliJ
+3. Create all JAR files (source, documentation, library) by running the **createAllJarFiles** Gradle task
+4. Copy the contents of **build/libs** directory to this directory in your project: **libs/org/webscene/webscene-client/version**
+5. Assuming Gradle is used in your project edit your **build.gradle** file, and insert the following:
 
 ```groovy
 repositories {
@@ -23,7 +22,7 @@ repositories {
 }
 ```
 
-7. Add this line in your **build.gradle** file to add the library as a dependency:
+6. Add this line in your **build.gradle** file to add the library as a dependency:
 
 ```groovy
 compile "org.webscene:webscene-client:version"

@@ -2,6 +2,7 @@ package org.webscene.client.html
 
 import org.w3c.dom.Element
 import kotlin.browser.document
+import kotlin.dom.addClass
 import kotlin.dom.appendText
 import kotlin.dom.createElement
 
@@ -36,6 +37,7 @@ open class HtmlElement : HtmlTag {
         val tmpId = id
 
         return document.createElement(tagName) {
+            addClass(*classes.toTypedArray())
             tmpAttributes.forEach { (key, value) -> setAttribute(key, value) }
             id = tmpId
             if (txtContent.isNotEmpty()) appendText(txtContent)

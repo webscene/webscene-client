@@ -4,11 +4,15 @@ import org.w3c.dom.Element
 import org.w3c.xhr.JSON
 import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
-import org.webscene.client.comms.HttpMethod
+import org.webscene.client.http.HttpMethod
 import org.webscene.client.dom.*
 import org.webscene.client.html.HtmlElement
 import org.webscene.client.html.HtmlTag
 import org.webscene.client.html.ParentHtmlElement
+import org.webscene.client.html.bootstrap.Column
+import org.webscene.client.html.bootstrap.ColumnSize
+import org.webscene.client.html.bootstrap.Container
+import org.webscene.client.html.bootstrap.Row
 import kotlin.browser.document
 import kotlin.js.json
 
@@ -90,18 +94,43 @@ object WebScene {
     }
 
     /**
+     * Contains common functionality for Bootstrap (CSS framework).
+     */
+    object Bootstrap {
+        /**
+         * Creates a new [container][Container] that holds one or more rows.
+         * @param init Initialisation block for setting up the [container][Container].
+         * @return A new [Container].
+         */
+        fun container(init: Container.() -> Unit) = createBootstrapContainer(init)
+
+        /**
+         * Creates a new [row][Row] that holds one or more columns.
+         * @param init Initialisation block for setting up the row.
+         * @return A new [Row].
+         */
+        fun row(init: Row.() -> Unit) = createBootstrapRow(init)
+
+        /**
+         * Creates a new [column][Column] that can contain HTML elements.
+         * @param colSizes One or more column sizes to use for sizing the column.
+         * @param init Initialisation block for setting up the column.
+         * @return A new [Column].
+         */
+        fun column(vararg colSizes: Pair<ColumnSize, Int>, init: Column.() -> Unit): Column {
+            val tmp = arrayOf(*colSizes)
+
+            return createBootstrapColumn(tmp, init)
+        }
+    }
+
+    /**
      * Creates a new parent HTML element that can contain child HTML elements.
      * @param tagName Name of the tag.
      * @param init Initialisation block for setting up the HTML element.
      * @return A new [parent HTML element][ParentHtmlElement].
      */
-    fun parentHtmlElement(tagName: String, init: ParentHtmlElement.() -> Unit): ParentHtmlElement {
-        val parentHtmlElement = ParentHtmlElement()
-
-        parentHtmlElement.tagName = tagName
-        parentHtmlElement.init()
-        return parentHtmlElement
-    }
+    fun parentHtmlElement(tagName: String, init: ParentHtmlElement.() -> Unit) = createParentHtmlElement(tagName, init)
 
     /**
      * Creates a new HTML element which doesn't have any child HTML elements.
@@ -109,13 +138,7 @@ object WebScene {
      * @param init Initialisation block for setting up the HTML element.
      * @return A new [HTML element][HtmlElement].
      */
-    fun htmlElement(tagName: String, init: HtmlElement.() -> Unit): HtmlElement {
-        val htmlElement = HtmlElement()
-
-        htmlElement.tagName = tagName
-        htmlElement.init()
-        return htmlElement
-    }
+    fun htmlElement(tagName: String, init: HtmlElement.() -> Unit) = createHtmlElement(tagName, init)
 
     /**
      * Converts Kotlin objects to JSON text.

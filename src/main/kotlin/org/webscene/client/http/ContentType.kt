@@ -1,4 +1,4 @@
-package org.webscene.client.comms
+package org.webscene.client.http
 
 /**
  * General content types used in a HTTP/S request or response.

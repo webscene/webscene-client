@@ -2,6 +2,7 @@ package org.webscene.client.html
 
 import org.w3c.dom.Element
 import kotlin.browser.document
+import kotlin.dom.addClass
 import kotlin.dom.createElement
 
 /**
@@ -23,7 +24,7 @@ open class ParentHtmlElement : ParentHtmlTag {
      * Creates a new parent HTML element in [ParentHtmlElement] that can contain child HTML elements.
      * @param tagName Name of the tag.
      * @param init Initialisation block for setting up the HTML element.
-             * @return A new [parent HTML element][ParentHtmlElement].
+     * @return A new [parent HTML element][ParentHtmlElement].
      */
     @Suppress("unused")
     fun parentHtmlElement(tagName: String, init: ParentHtmlElement.() -> Unit): ParentHtmlElement {
@@ -39,7 +40,7 @@ open class ParentHtmlElement : ParentHtmlTag {
      * Creates a new HTML element in [ParentHtmlElement] which doesn't have any child HTML elements.
      * @param tagName Name of the tag.
      * @param init Initialisation block for setting up the HTML element.
-             * @return A new [HTML element][HtmlElement].
+     * @return A new [HTML element][HtmlElement].
      */
     @Suppress("unused")
     fun htmlElement(tagName: String, init: HtmlElement.() -> Unit): HtmlElement {
@@ -73,6 +74,7 @@ open class ParentHtmlElement : ParentHtmlTag {
         val tmpChildren = children
 
         return document.createElement(tagName) {
+            addClass(*classes.toTypedArray())
             tmpAttributes.forEach { (key, value) -> setAttribute(key, value) }
             id = tmpId
             tmpChildren.forEach { child ->
