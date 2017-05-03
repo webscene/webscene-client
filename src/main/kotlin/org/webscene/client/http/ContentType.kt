@@ -5,7 +5,6 @@ package org.webscene.client.http
  * @property txt [String] representation of the content type.
  * @author Nick Apperley
  */
-@Suppress("unused")
 enum class ContentType(val txt: String) {
     /** HTML file. **/
     HTML("text/html"),

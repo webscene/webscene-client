@@ -84,3 +84,9 @@ hs_err_pid*
 
 # Additional files/directories to ignore.
 /web/
+.idea/misc.xml
+.idea/modules.xml
+gradle/
+src/main/java/
+src/main/resources/
+src/test/
