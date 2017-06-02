@@ -92,3 +92,4 @@ src/test/
 
 # Additional files/directories to unignore.
 !/gradle/wrapper/*
+!build.gradle.kts
