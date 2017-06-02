@@ -3,6 +3,7 @@ package org.webscene.client.html
 import org.w3c.dom.Element
 import kotlin.browser.document
 import kotlin.dom.addClass
+import kotlin.dom.appendText
 import kotlin.dom.createElement
 
 /**
@@ -77,6 +78,7 @@ open class ParentHtmlElement : ParentHtmlTag {
             addClass(*classes.toTypedArray())
             tmpAttributes.forEach { (key, value) -> setAttribute(key, value) }
             id = tmpId
+            if (txtContent.isNotEmpty()) appendText(txtContent)
             tmpChildren.forEach { child ->
                 appendChild(child.toDomElement())
             }
@@ -99,7 +101,7 @@ open class ParentHtmlElement : ParentHtmlTag {
     }
 
     /**
-     * Changes the text to include in the parent HTML element.
+     * Changes the [text][txtContent] to include in the parent HTML element.
      */
     operator fun String.unaryPlus() {
         txtContent = this

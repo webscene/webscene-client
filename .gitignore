@@ -86,7 +86,9 @@ hs_err_pid*
 /web/
 .idea/misc.xml
 .idea/modules.xml
-gradle/
 src/main/java/
 src/main/resources/
 src/test/
+
+# Additional files/directories to unignore.
+!/gradle/wrapper/*

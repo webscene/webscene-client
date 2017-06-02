@@ -124,11 +124,8 @@ object WebScene {
          * @param init Initialisation block for setting up the column.
          * @return A new [Column].
          */
-        fun column(vararg colSizes: Pair<ColumnSize, Int>, init: Column.() -> Unit): Column {
-            val tmp = arrayOf(*colSizes)
-
-            return createBootstrapColumn(tmp, init)
-        }
+        fun column(vararg colSizes: Pair<ColumnSize, Int>, init: Column.() -> Unit) =
+            createBootstrapColumn(colSizes = arrayOf(*colSizes), init = init)
     }
 
     /**
@@ -164,11 +161,13 @@ object WebScene {
      * @param init Initialisation block for setting up the [HTTP/S client][XMLHttpRequest].
      * @return A new [HTTP/S client][XMLHttpRequest].
      */
-    fun httpClient(method: HttpMethod,
-                   url: String,
-                   reqData: Array<Pair<String, *>> = arrayOf(),
-                   sendNow: Boolean = false,
-                   init: XMLHttpRequest.() -> Unit): XMLHttpRequest {
+    fun httpClient(
+        method: HttpMethod,
+        url: String,
+        reqData: Array<Pair<String, *>> = arrayOf(),
+        sendNow: Boolean = false,
+        init: XMLHttpRequest.() -> Unit
+    ): XMLHttpRequest {
         val client = XMLHttpRequest()
 
         client.open(method = method.txt, url = url)
@@ -190,12 +189,13 @@ object WebScene {
      * @param onError Callback to use when a error has occurred.
      */
     fun <R : Any?> fetchData(
-            url: String,
-            method: HttpMethod,
-            body: Any = "",
-            reqHeaders: Headers,
-            onResponse: (Response) -> R,
-            onError: (Throwable) -> R) {
+        url: String,
+        method: HttpMethod,
+        body: Any = "",
+        onResponse: (Response) -> R,
+        onError: (Throwable) -> R,
+        reqHeaders: Headers = Headers()
+    ) {
         val request = RequestInit(method = method.txt, body = body, headers = reqHeaders)
 
         if (!reqHeaders.has("content-type")) reqHeaders.append("content-type", ContentType.PLAIN_TEXT.txt)
@@ -212,9 +212,8 @@ object WebScene {
         var result: Notification? = null
 
         Notification.requestPermission { status ->
-            if (status.toString() == NotificationPermission.GRANTED.txt) {
-                result = Notification(title = title, options = options)
-            }
+            if (status.toString() == NotificationPermission.GRANTED.txt) result =
+                Notification(title = title, options = options)
         }
         return result
     }
