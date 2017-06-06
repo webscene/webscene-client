@@ -38,7 +38,7 @@ class Row : ParentHtmlElement() {
         val tmpChildren = children
 
         return document.createElement(tagName) {
-            addClass(*classes.toTypedArray())
+            addClass("row", *classes.toTypedArray())
             tmpAttributes.forEach { (key, value) -> setAttribute(key, value) }
             id = tmpId
             tmpChildren.forEach { child ->
