@@ -5,14 +5,13 @@ package org.webscene.client.html.bootstrap
  * @property txt Text representation of the column size.
  * @author Nick Apperley
  */
-@Suppress("unused")
 enum class ColumnSize(val txt: String) {
     /** Smartphone size. **/
-    EXTRA_SMALL("xs"),
+    EXTRA_SMALL("col-xs"),
     /** Tablet size. **/
-    SMALL("sm"),
+    SMALL("col-sm"),
     /** Desktop size. **/
-    MEDIUM("md"),
+    MEDIUM("col-md"),
     /** Desktop size. **/
-    LARGE("lg")
+    LARGE("col-lg")
 }

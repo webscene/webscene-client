@@ -26,7 +26,7 @@ class Column : ParentHtmlElement() {
         val tmpChildren = children
 
         return document.createElement(tagName) {
-            addClass(*colSizes.map { (key, value) -> "col-${key.txt}-$value" }.toTypedArray())
+            addClass(*colSizes.map { (key, value) -> "${key.txt}-$value" }.toTypedArray())
             addClass(*classes.toTypedArray())
             tmpAttributes.forEach { (key, value) -> setAttribute(key, value) }
             id = tmpId

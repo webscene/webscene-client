@@ -16,7 +16,7 @@ import kotlin.browser.document
  * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the
  * [DOM element][Element].
  */
-fun Document.updateElementById(init: () -> HtmlTag) {
+internal fun Document.updateElementById(init: () -> HtmlTag) {
     val htmlTag = init()
     val domElement = document.findElementById(htmlTag.id)
 
@@ -27,7 +27,7 @@ fun Document.updateElementById(init: () -> HtmlTag) {
  * Removes an existing DOM element by its ID.
  * @param id Unique identifier of the DOM element.
  */
-fun Document.removeElementById(id: String) {
+internal fun Document.removeElementById(id: String) {
     val domElement = document.findElementById(id)
 
     domElement?.remove()
@@ -37,7 +37,7 @@ fun Document.removeElementById(id: String) {
  * Prepends a [DOM element][Element] to the **body** element.
  * @param domElement The DOM element to prepend.
  */
-fun Document.prependElementToBody(domElement: Element) {
+internal fun Document.prependElementToBody(domElement: Element) {
     document.body?.prepend(domElement)
 }
 
@@ -45,7 +45,7 @@ fun Document.prependElementToBody(domElement: Element) {
  * Prepends a [DOM element][Element] to the **head** element.
  * @param domElement The DOM element to prepend.
  */
-fun Document.prependElementToHead(domElement: Element) {
+internal fun Document.prependElementToHead(domElement: Element) {
     document.head?.prepend(domElement)
 }
 
@@ -53,7 +53,7 @@ fun Document.prependElementToHead(domElement: Element) {
  * Appends a [DOM element][Element] to the **head** element.
  * @param domElement The DOM element to append.
  */
-fun Document.appendElementToHead(domElement: Element) {
+internal fun Document.appendElementToHead(domElement: Element) {
     document.head?.append(domElement)
 }
 
@@ -62,19 +62,19 @@ fun Document.appendElementToHead(domElement: Element) {
  * @param tagName Name of the tag.
  * @return A list of all [DOM elements][Element] that match [tagName].
  */
-fun Document.findAllElementsByTagName(tagName: String) = document.getElementsByTagName(tagName).asList()
+internal fun Document.findAllElementsByTagName(tagName: String) = document.getElementsByTagName(tagName).asList()
 
 /**
  * Retrieves the [DOM element][Element] that matches [id].
  * @param id Unique identifier for the [DOM element][Element].
  * @return A [DOM element][Element] if there is a match.
  */
-fun Document.findElementById(id: String): Element? = document.getElementById(id)
+internal fun Document.findElementById(id: String): Element? = document.getElementById(id)
 
 /**
  * Retrieves all DOM [elements][Element] that match one or more [class names][classNames].
  * @param classNames One or more names of classes.
  * @return A list of all [DOM elements][Element] that match [classNames].
  */
-fun Document.findAllElementsByClassNames(vararg classNames: String) = document.getElementsByClassName(
+internal fun Document.findAllElementsByClassNames(vararg classNames: String) = document.getElementsByClassName(
         classNames.joinToString(separator = " ")).asList()

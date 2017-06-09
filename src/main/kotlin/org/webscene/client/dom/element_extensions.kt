@@ -4,6 +4,7 @@ package org.webscene.client.dom
 
 import org.w3c.dom.Element
 import org.w3c.dom.asList
+import org.w3c.dom.get
 import org.webscene.client.html.HtmlElement
 import org.webscene.client.html.ParentHtmlElement
 
@@ -70,4 +71,37 @@ fun Element?.prependHtmlElement(tagName: String, init: HtmlElement.() -> Unit) {
     htmlElement.tagName = tagName
     htmlElement.init()
     this?.prepend(htmlElement.toDomElement())
+}
+
+/**
+ * Changes the focus to the DOM element.
+ */
+fun Element?.focus() {
+    if (this?.localName == "input") this.asDynamic().focus()
+}
+
+val Element?.textBoxValue
+    get() = if (this?.localName == "input" && this.attributes["type"]?.value == "text") {
+        this.asDynamic().value.toString()
+    } else {
+        ""
+    }
+
+fun Element?.textBoxValue(txt: String) {
+    if (this?.localName == "input" && this.attributes["type"]?.value == "text") {
+        this.asDynamic().value = txt
+    }
+}
+
+val Element?.textAreaValue
+    get() = if (this?.localName == "textarea") {
+        this.asDynamic().value.toString()
+    } else {
+        ""
+    }
+
+fun Element?.textAreaValue(txt: String) {
+    if (this?.localName == "textarea") {
+        this.asDynamic().value = txt
+    }
 }
