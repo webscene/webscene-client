@@ -13,11 +13,11 @@ import kotlin.browser.document
 
 /**
  * Updates an existing DOM element by its ID.
- * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the
+ * @param block Function for updating the [HTML element][HtmlTag] which updates the
  * [DOM element][Element].
  */
-internal fun Document.updateElementById(init: () -> HtmlTag) {
-    val htmlTag = init()
+internal fun Document.updateElementById(block: () -> HtmlTag) {
+    val htmlTag = block()
     val domElement = document.findElementById(htmlTag.id)
 
     domElement?.replaceWith(htmlTag.toDomElement())
