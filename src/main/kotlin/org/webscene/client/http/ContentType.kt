@@ -21,9 +21,9 @@ enum class ContentType(val txt: String) {
     /** CSS file. **/
     CSS("text/css"),
     /** Mpeg 4 video file. **/
-    MPEG4_VIDEO("video/mp4"),
+    MP4_VIDEO("video/mp4"),
     /** Mpeg 3 sound file. **/
-    MPEG3_AUDIO("audio/mp3"),
+    MP3_AUDIO("audio/mp3"),
     /** OGG sound file. **/
     OGG_AUDIO("audio/ogg"),
     /** Webm video file. **/
@@ -35,5 +35,7 @@ enum class ContentType(val txt: String) {
     /** XML file. **/
     XML("application/xml"),
     /** Zip compression file. **/
-    ZIP("application/zip")
+    ZIP("application/zip"),
+    /** Json file. **/
+    JSON("application/json")
 }

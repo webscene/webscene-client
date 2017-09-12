@@ -39,7 +39,7 @@ class Container : ParentHtmlElement() {
 
         return document.createElement(tagName) {
             addClass(*classes.toTypedArray())
-            if (fullWidth) className += "container-fluid" else className += " container"
+            className += if (fullWidth) "container-fluid" else " container"
             tmpAttributes.forEach { (key, value) -> setAttribute(key, value) }
             id = tmpId
             tmpChildren.forEach { child ->

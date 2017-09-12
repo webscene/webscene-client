@@ -1,6 +1,7 @@
 package org.webscene.client
 
 import org.w3c.dom.Element
+import org.w3c.dom.events.Event
 import org.w3c.fetch.Headers
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.Response
@@ -12,6 +13,7 @@ import org.w3c.xhr.XMLHttpRequestResponseType
 import org.webscene.client.dom.*
 import org.webscene.client.html.HtmlElement
 import org.webscene.client.html.HtmlTag
+import org.webscene.client.html.InputType
 import org.webscene.client.html.ParentHtmlElement
 import org.webscene.client.html.bootstrap.Column
 import org.webscene.client.html.bootstrap.ColumnSize
@@ -52,7 +54,9 @@ object WebScene {
          * @return The page ID if it is found otherwise a empty [String].
          */
         fun pageId(): String {
-            val metaElements = DomQuery.allElementsByTagName("meta").filter { it.hasAttribute("pageId") }
+            val metaElements = DomQuery.allElementsByTagName("meta").filter {
+                it.hasAttribute("pageId")
+            }
 
             return if (metaElements.isNotEmpty()) metaElements[0].getAttribute("pageId") ?: "" else ""
         }
@@ -89,9 +93,9 @@ object WebScene {
 
         /**
          * Updates an existing DOM element by its ID.
-         * @param init Initialisation block for updating the [HTML element][HtmlTag] which updates the DOM element.
+         * @param block Function for updating the [HTML element][HtmlTag] which updates the DOM element.
          */
-        fun updateElementById(init: () -> HtmlTag) = document.updateElementById(init)
+        fun updateElementById(block: () -> HtmlTag) = document.updateElementById(block)
 
         /**
          * Removes an existing DOM element by its ID.
@@ -143,6 +147,64 @@ object WebScene {
      * @return A new [HTML element][HtmlElement].
      */
     fun htmlElement(tagName: String, init: HtmlElement.() -> Unit) = createHtmlElement(tagName, init)
+
+    /**
+     * Creates a new HTML **form** element that can contain child HTML elements.
+     * @param action Relative URL to the REST resource.
+     * @param init Initialisation block for setting up the form.
+     * @return A new HTML **form** element.
+     */
+    fun htmlForm(action: String, method: HttpMethod, init: ParentHtmlElement.() -> Unit): ParentHtmlElement =
+        createHtmlForm(action = action, method = method, init = init)
+
+    /**
+     * Creates a new HTML **span** element that contains a **input** and **datalist** element.
+     * @param listValues One or more values that populate the **datalist** element.
+     * @param groupId The ID to use for the **span** element that is grouping everything together.
+     * @param listId The ID to use for the **datalist** element.
+     * @param inputId The ID to use for the **input** element.
+     * @param inputName Name of the **input** element which is used for accessing data in a **form** element.
+     * @return A new HTML **span** element.
+     */
+    fun htmlDataList(
+        vararg listValues: String,
+        groupId: String = "",
+        listId: String,
+        inputId: String = "",
+        inputName: String
+    ): ParentHtmlElement = createHtmlDataList(
+        groupId = groupId,
+        inputId = inputId,
+        inputName = inputName,
+        listId = listId,
+        listValues = *listValues
+    )
+
+    /**
+     * Creates a new HTML **input** element that doesn't contain any HTML elements.
+     * @param type The type of **input** element to use (eg [InputType.TEXT]).
+     * @param disabled If set to true then the element is disabled.
+     * @param readOnly If set to true then the element can only be read.
+     * @param autoFocus If set to true then the element gains focus after the web page loads.
+     * @param name Unique name of the input. An HTML form uses [name] as a field name.
+     * @param init Initialisation block for setting up the input.
+     * @return A new HTML **input** element.
+     */
+    fun htmlInput(
+        type: InputType,
+        disabled: Boolean = false,
+        readOnly: Boolean = false,
+        autoFocus: Boolean = false,
+        name: String = "",
+        init: HtmlElement.() -> Unit
+    ): HtmlElement = createHtmlInput(
+        type = type,
+        disabled = disabled,
+        readOnly = readOnly,
+        autoFocus = autoFocus,
+        name = name,
+        init = init
+    )
 
     /**
      * Converts Kotlin objects to JSON text.
@@ -205,15 +267,20 @@ object WebScene {
     /**
      * Creates a [notification][Notification] which will be displayed if the user has granted permission.
      * @param title Name to use in the notification.
+     * @param onClick Callback to use when a user has clicked on a notification.
      * @param options The [options][NotificationOptions] to use for the notification.
      * @return A [Notification] object if the user has granted permission, otherwise null is returned.
      */
-    fun notification(title: String, options: NotificationOptions): Notification? {
+    fun notification(
+        title: String,
+        onClick: (Event) -> Unit = {},
+        options: NotificationOptions
+    ): Notification? {
         var result: Notification? = null
 
         Notification.requestPermission { status ->
             if (status.toString() == NotificationPermission.GRANTED.txt) result =
-                Notification(title = title, options = options)
+                Notification(title = title, options = options).apply { onclick = onClick }
         }
         return result
     }
