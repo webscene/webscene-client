@@ -1,6 +1,7 @@
 package org.webscene.client
 
 import org.w3c.dom.Element
+import org.w3c.dom.events.Event
 import org.w3c.fetch.Headers
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.Response
@@ -53,7 +54,9 @@ object WebScene {
          * @return The page ID if it is found otherwise a empty [String].
          */
         fun pageId(): String {
-            val metaElements = DomQuery.allElementsByTagName("meta").filter { it.hasAttribute("pageId") }
+            val metaElements = DomQuery.allElementsByTagName("meta").filter {
+                it.hasAttribute("pageId")
+            }
 
             return if (metaElements.isNotEmpty()) metaElements[0].getAttribute("pageId") ?: "" else ""
         }
@@ -264,15 +267,20 @@ object WebScene {
     /**
      * Creates a [notification][Notification] which will be displayed if the user has granted permission.
      * @param title Name to use in the notification.
+     * @param onClick Callback to use when a user has clicked on a notification.
      * @param options The [options][NotificationOptions] to use for the notification.
      * @return A [Notification] object if the user has granted permission, otherwise null is returned.
      */
-    fun notification(title: String, options: NotificationOptions): Notification? {
+    fun notification(
+        title: String,
+        onClick: (Event) -> Unit = {},
+        options: NotificationOptions
+    ): Notification? {
         var result: Notification? = null
 
         Notification.requestPermission { status ->
             if (status.toString() == NotificationPermission.GRANTED.txt) result =
-                Notification(title = title, options = options)
+                Notification(title = title, options = options).apply { onclick = onClick }
         }
         return result
     }

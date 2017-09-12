@@ -22,7 +22,7 @@ boolean deleteDirectory(File directory) {
 
 buildscript {
     ext {
-        KOTLIN_VER = '1.1.2-2'
+        KOTLIN_VER = '1.1.4-3'
         DOKKA_VER = '0.9.13'
     }
 
