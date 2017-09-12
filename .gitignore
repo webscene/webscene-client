@@ -6,9 +6,6 @@
 # Ignore Gradle GUI config
 gradle-app.setting
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
 # Cache of project
 .gradletasknamecache
 
@@ -19,7 +16,6 @@ gradle-app.setting
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
 
@@ -34,7 +30,6 @@ gradle-app.setting
 
 # Gradle:
 .idea/**/gradle.xml
-.idea/**/libraries
 
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
@@ -84,8 +79,7 @@ hs_err_pid*
 
 # Additional files/directories to ignore.
 /web/
-.idea/misc.xml
-.idea/modules.xml
+.idea/
 src/main/java/
 src/main/resources/
 src/test/

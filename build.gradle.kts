@@ -5,37 +5,19 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 group = "org.webscene"
 version = "0.1-SNAPSHOT"
 
-fun deleteDirectory(directory: File): Boolean {
-    @Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER")
-    var files: Array<File>? = arrayOf()
+val KOTLIN_VER = "1.1.4-3"
+val DOKKA_VER = "0.9.13"
 
-    if (directory.exists()) {
-        files = directory.listFiles()
-        if (files != null) {
-            for (i in 0..files.size) {
-                if (files[i].isDirectory) {
-                    deleteDirectory(files[i])
-                } else {
-                    files[i].delete()
-                }
-            }
-        }
-    }
-    return directory.delete()
-}
 
 buildscript {
-    extra["kotlin-ver"] = "1.1.2-2"
-    extra["dokka-ver"] = "0.9.13"
-
     repositories {
         mavenCentral()
         jcenter()
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${extra["kotlin-ver"]}")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:${extra["dokka-ver"]}")
+        classpath(kotlin("gradle-plugin"))
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.13")
     }
 }
 
@@ -46,48 +28,45 @@ apply {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-js:${extra["kotlin-ver"]}")
+    "compile"(kotlin(module = "stdlib-js", version = "1.1.4-3"))
 }
 
 val dokka: DokkaTask by tasks
 val compileKotlin2Js: Kotlin2JsCompile by tasks
 
-dokka.moduleName = "webscene-client"
-dokka.outputDirectory = "$buildDir/javadoc"
-dokka.sourceDirs = files("src/main/kotlin")
+with(dokka) {
+    moduleName = "webscene-client"
+    outputDirectory = "$buildDir/javadoc"
+    sourceDirs = files("src/main/kotlin")
+}
+
 compileKotlin2Js.kotlinOptions {
     outputFile = "web/webscene-client.js"
     sourceMap = true
 }
 
 dokka.doFirst {
-    deleteDirectory(File("${projectDir.absolutePath}/build/javadoc"))
+    File("${projectDir.absolutePath}/build/javadoc").deleteRecursively()
 }
 
-tasks {
-    "createSourceJar"(Jar::class) {
-        dependsOn("classes")
-        classifier = "sources"
-        from("src/main/kotlin")
-    }
-
-    "createDokkaJar"(Jar::class) {
-        dependsOn("dokka")
-        classifier = "javadoc"
-        from(dokka.outputDirectory)
-    }
-
-    "createAllJarFiles" {
-        dependsOn("jar", "createSourceJar", "createDokkaJar")
-        println("Creating JAR files (library, sources and documentation)...")
-    }
+task<Jar>("createSourceJar") {
+    dependsOn("classes")
+    classifier = "sources"
+    from("src/main/kotlin")
 }
 
-val createAllJarFiles: Task by tasks
+task<Jar>("createDokkaJar") {
+    dependsOn("dokka")
+    classifier = "javadoc"
+    from(dokka.outputDirectory)
+}
 
-createAllJarFiles.doLast {
-    println("Finished creating JAR files.")
+task<Jar>("createAllJarFiles") {
+    dependsOn("jar", "createSourceJar", "createDokkaJar")
+    println("Creating JAR files (library, sources and documentation)...")
+    doLast { println("Finished creating JAR files.") }
 }
