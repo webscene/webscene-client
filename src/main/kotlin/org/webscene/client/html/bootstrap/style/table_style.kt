@@ -2,17 +2,19 @@ package org.webscene.client.html.bootstrap.style
 
 /**
  * Contains all available Bootstrap Table styles.
- * @property txt Text representation of the table style.
  * @author Nick Apperley
  */
 @Suppress("unused")
-enum class TableStyle(val txt: String) {
+enum class TableStyle {
     /** Zebra stripe table rows. **/
-    STRIPED("table-striped"),
+    STRIPED,
     /** Apply a border to the table. **/
-    BORDERED("table-bordered"),
+    BORDERED,
     /** Enable a hover state on table rows.. **/
-    HOVER("table-hover"),
+    HOVER,
     /** Condense a table by halving cell padding. **/
-    CONDENSED("table-condensed")
+    CONDENSED
 }
+
+val TableStyle.txt
+    get() = "table-${name.toLowerCase()}"

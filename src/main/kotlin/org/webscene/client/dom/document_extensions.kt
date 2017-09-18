@@ -5,18 +5,14 @@ package org.webscene.client.dom
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.asList
+import org.webscene.client.html.HtmlSection
 import org.webscene.client.html.HtmlTag
 import kotlin.browser.document
 
 // Extensions for org.w3c.dom.Document.
 // Author - Nick Apperley
 
-/**
- * Updates an existing DOM element by its ID.
- * @param block Function for updating the [HTML element][HtmlTag] which updates the
- * [DOM element][Element].
- */
-internal fun Document.updateElementById(block: () -> HtmlTag) {
+internal fun Document.replaceElement(block: () -> HtmlTag) {
     val htmlTag = block()
     val domElement = document.findElementById(htmlTag.id)
 
@@ -24,9 +20,23 @@ internal fun Document.updateElementById(block: () -> HtmlTag) {
 }
 
 /**
- * Removes an existing DOM element by its ID.
- * @param id Unique identifier of the DOM element.
+ * Removes an existing DOM element. The element **MUST** have its ID attribute set.
+ * @param domElement The [element][Element] to remove from the DOM.
  */
+internal fun Document.removeElement(domElement: Element) = document.removeElementById(domElement.id)
+
+/**
+ * Removes an existing DOM element from a [section][htmlSection]. The element **MUST** have its ID attribute set.
+ * @param domElement The [element][Element] to remove from the DOM.
+ * @param htmlSection The HTML section to use.
+ */
+internal fun Document.removeElement(domElement: Element, htmlSection: HtmlSection) {
+    when (htmlSection) {
+        HtmlSection.HEAD -> document.head?.removeChild(domElement)
+        else -> document.body?.removeChild(domElement)
+    }
+}
+
 internal fun Document.removeElementById(id: String) {
     val domElement = document.findElementById(id)
 
@@ -34,47 +44,32 @@ internal fun Document.removeElementById(id: String) {
 }
 
 /**
- * Prepends a [DOM element][Element] to the **body** element.
+ * Prepends a [DOM element][Element] to a [HTML section][htmlSection].
  * @param domElement The DOM element to prepend.
+ * @param htmlSection The HTML section to use.
  */
-internal fun Document.prependElementToBody(domElement: Element) {
-    document.body?.prepend(domElement)
+internal fun Document.prependElement(domElement: Element, htmlSection: HtmlSection) {
+    when (htmlSection) {
+        HtmlSection.HEAD -> document.head?.prepend(domElement)
+        else -> document.body?.prepend(domElement)
+    }
 }
 
 /**
- * Prepends a [DOM element][Element] to the **head** element.
- * @param domElement The DOM element to prepend.
- */
-internal fun Document.prependElementToHead(domElement: Element) {
-    document.head?.prepend(domElement)
-}
-
-/**
- * Appends a [DOM element][Element] to the **head** element.
+ * Appends a [DOM element][Element] to a [HTML section][htmlSection].
  * @param domElement The DOM element to append.
+ * @param htmlSection The HTML section to use.
  */
-internal fun Document.appendElementToHead(domElement: Element) {
-    document.head?.append(domElement)
+internal fun Document.appendElement(domElement: Element, htmlSection: HtmlSection) {
+    when (htmlSection) {
+        HtmlSection.HEAD -> document.head?.append(domElement)
+        else -> document.body?.append(domElement)
+    }
 }
 
-/**
- * Retrieves all DOM [elements][Element] that match [tagName].
- * @param tagName Name of the tag.
- * @return A list of all [DOM elements][Element] that match [tagName].
- */
 internal fun Document.findAllElementsByTagName(tagName: String) = document.getElementsByTagName(tagName).asList()
 
-/**
- * Retrieves the [DOM element][Element] that matches [id].
- * @param id Unique identifier for the [DOM element][Element].
- * @return A [DOM element][Element] if there is a match.
- */
 internal fun Document.findElementById(id: String): Element? = document.getElementById(id)
 
-/**
- * Retrieves all DOM [elements][Element] that match one or more [class names][classNames].
- * @param classNames One or more names of classes.
- * @return A list of all [DOM elements][Element] that match [classNames].
- */
 internal fun Document.findAllElementsByClassNames(vararg classNames: String) = document.getElementsByClassName(
         classNames.joinToString(separator = " ")).asList()

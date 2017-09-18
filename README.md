@@ -10,39 +10,40 @@ To install the library do the following:
 1. Clone the **webscene/webscene-client** Git repository from GitHub
 2. Import the cloned repository into IntelliJ
 3. Create all JAR files (source, documentation, library) by running the **createAllJarFiles** Gradle task
-4. Copy the contents of **build/libs** directory to this directory in your project: **libs/org/webscene/webscene-client/version**
-5. Assuming Gradle is used in your project edit your **build.gradle** file, and insert the following:
+4. Copy the contents of **build/libs** directory to this directory in your project: **libs/org/webscene/webscene-client/{version}**
+5. Assuming Gradle is used in your project edit your **build.gradle.kts** file, and insert the following:
 
-```groovy
+```kotlin
+import java.net.URI
+
+// ...
+
 repositories {
     mavenCentral()
     maven {
-        url uri("libs")
+        url = URI("libs").toURL()
     }
 }
 ```
 
 6. Add this line in your **build.gradle** file to add the library as a dependency:
 
-```groovy
-compile "org.webscene:webscene-client:version"
+```kotlin
+compile("org.webscene:webscene-client:version")
 ```
 
 
-## Usage
+## Basic Usage
 
-Use the **org.webscene.client.WebScene** object to create HTML elements. Below is an example:
+Use the **org.webscene.client.html.HtmlCreator** object to create HTML elements. Below is an example:
 
 ```kotlin
-import org.webscene.client.WebScene as ws
+import org.webscene.client.html.HtmlCreator as html
 
-@JvmStatic
 fun main(args: Array<String>) {
-    ws.parentHtmlElement("div") {
-        parentHtmlElement("p") {
-            htmlElement("b") {
-                +"Hello World! :)"
-            }
+    html.parentElement("div") {
+        parentElement("p") {
+            element("b") { +"Hello World! :)" }
         }
     }
 }
@@ -59,14 +60,39 @@ Once the HTML element is created you call the **createText** function off the ob
 </div>
 ```
 
-To create a new DOM element (**org.w3c.dom.Element**) call the **toDomElement** function instead. Use the DomEditor (**WebScene.DomEditor**) object for editing the DOM. Below is an example:
+To create a new DOM element (**org.w3c.dom.Element**) call the **toDomElement** function instead. Use the **DomEditor** (org.webscene.client.dom.DomEditor) object for editing the DOM. Below is an example:
 
 ```kotlin
 // ...
 
-fun editDom() {
+fun setupHomePage() {
     // ...
 
-    ws.DomEditor.prependElementToBody(mainLayout.toDomElement())
+    DomEditor.prependElementToBody(mainLayout.toDomElement())
+    DomEditor.editSection HtmlSection.BODY (
+        domElement = mainLayout, 
+        editType = EditType.PREPEND
+    )
 }
+```
+
+
+## DOM Queries
+
+Can do a DOM query through the **DomQuery** (org.webscene.client.dom.DomQuery) object for an element by ID. Below is an example:
+
+```kotlin
+val mainLayout = DomQuery.elementById("mainLayout")
+```
+
+Queries can also be done to find elements by class name(s). Below is an example:
+
+```kotlin
+val headerItems = DomQuery.allElementsByClassNames("header-item")
+```
+
+Tags can even be queried. Below is an example:
+
+```kotlin
+val buttons = DomQuery.allElementsByTagName("button")
 ```

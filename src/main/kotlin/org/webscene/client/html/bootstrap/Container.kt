@@ -20,15 +20,15 @@ class Container : ParentHtmlElement() {
 
     /**
      * Creates a new [row][Row] in [Container] that holds one or more columns.
-     * @param init Initialisation block for setting up the row.
+     * @param block Initialisation block for setting up the row.
      * @return A new [Row].
      */
     @Suppress("unused")
-    fun row(init: Row.() -> Unit): Row {
+    fun row(block: Row.() -> Unit): Row {
         val rowElement = Row()
 
         children.add(rowElement)
-        rowElement.init()
+        rowElement.block()
         return rowElement
     }
 

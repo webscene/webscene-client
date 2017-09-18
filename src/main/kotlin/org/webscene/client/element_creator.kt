@@ -1,5 +1,6 @@
 package org.webscene.client
 
+import org.webscene.client.html.HtmlCreator
 import org.webscene.client.html.HtmlElement
 import org.webscene.client.html.InputType
 import org.webscene.client.html.ParentHtmlElement
@@ -7,45 +8,44 @@ import org.webscene.client.html.bootstrap.Column
 import org.webscene.client.html.bootstrap.ColumnSize
 import org.webscene.client.html.bootstrap.Container
 import org.webscene.client.html.bootstrap.Row
-import org.webscene.client.http.HttpMethod
 
 // Creates Bootstrap and HTML elements.
 // Author - Nick Apperley
 
-internal fun createBootstrapContainer(init: Container.() -> Unit): Container {
+internal fun createBootstrapContainer(block: Container.() -> Unit): Container {
     val containerElement = Container()
 
-    containerElement.init()
+    containerElement.block()
     return containerElement
 }
 
-internal fun createBootstrapRow(init: Row.() -> Unit): Row {
+internal fun createBootstrapRow(block: Row.() -> Unit): Row {
     val rowElement = Row()
 
-    rowElement.init()
+    rowElement.block()
     return rowElement
 }
 
-internal fun createBootstrapColumn(colSizes: Array<Pair<ColumnSize, Int>>, init: Column.() -> Unit): Column {
+internal fun createBootstrapColumn(colSizes: Array<Pair<ColumnSize, Int>>, block: Column.() -> Unit): Column {
     val colElement = Column()
 
     colSizes.forEach { colElement.colSizes[it.first] = it.second }
-    colElement.init()
+    colElement.block()
     return colElement
 }
 
-internal fun createParentHtmlElement(tagName: String, init: ParentHtmlElement.() -> Unit): ParentHtmlElement {
+internal fun createParentHtmlElement(tagName: String, block: ParentHtmlElement.() -> Unit): ParentHtmlElement {
     val parentHtmlElement = ParentHtmlElement()
 
-    parentHtmlElement.init()
+    parentHtmlElement.block()
     parentHtmlElement.tagName = tagName
     return parentHtmlElement
 }
 
-internal fun createHtmlElement(tagName: String, init: HtmlElement.() -> Unit): HtmlElement {
+internal fun createHtmlElement(tagName: String, block: HtmlElement.() -> Unit): HtmlElement {
     val htmlElement = HtmlElement()
 
-    htmlElement.init()
+    htmlElement.block()
     htmlElement.tagName = tagName
     return htmlElement
 }
@@ -53,13 +53,13 @@ internal fun createHtmlElement(tagName: String, init: HtmlElement.() -> Unit): H
 internal fun createHtmlForm(
     action: String,
     method: HttpMethod,
-    init: ParentHtmlElement.() -> Unit
+    block: ParentHtmlElement.() -> Unit
 ): ParentHtmlElement {
     val formElement = ParentHtmlElement()
 
-    formElement.init()
+    formElement.block()
     formElement.attributes["action"] = action
-    formElement.attributes["method"] = method.txt
+    formElement.attributes["method"] = method.name
     formElement.tagName = "form"
     return formElement
 }
@@ -70,7 +70,7 @@ internal fun createHtmlDataList(
     listId: String,
     inputId: String = "",
     inputName: String
-): ParentHtmlElement = WebScene.parentHtmlElement("span") {
+): ParentHtmlElement = HtmlCreator.parentElement("span") {
     if (groupId.isNotEmpty()) id = groupId
     htmlElement("input") {
         if (inputId.isNotEmpty()) id = inputId
@@ -91,11 +91,11 @@ internal fun createHtmlInput(
     readOnly: Boolean = false,
     autoFocus: Boolean = false,
     name: String = "",
-    init: HtmlElement.() -> Unit
+    block: HtmlElement.() -> Unit
 ): HtmlElement {
     val inputElement = HtmlElement()
 
-    inputElement.init()
+    inputElement.block()
     inputElement.attributes["type"] = type.txt
     if (name.isNotEmpty()) inputElement.attributes["name"] = name
     if (disabled) inputElement.attributes["disabled"] = "" else inputElement.attributes -= "disabled"

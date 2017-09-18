@@ -24,32 +24,32 @@ open class ParentHtmlElement : ParentHtmlTag {
     /**
      * Creates a new parent HTML element in [ParentHtmlElement] that can contain child HTML elements.
      * @param tagName Name of the tag.
-     * @param init Initialisation block for setting up the HTML element.
+     * @param block Initialisation block for setting up the HTML element.
      * @return A new [parent HTML element][ParentHtmlElement].
      */
     @Suppress("unused")
-    fun parentHtmlElement(tagName: String, init: ParentHtmlElement.() -> Unit): ParentHtmlElement {
+    fun parentHtmlElement(tagName: String, block: ParentHtmlElement.() -> Unit): ParentHtmlElement {
         val parentHtmlElement = ParentHtmlElement()
 
         parentHtmlElement.tagName = tagName
         children.add(parentHtmlElement)
-        parentHtmlElement.init()
+        parentHtmlElement.block()
         return parentHtmlElement
     }
 
     /**
      * Creates a new HTML element in [ParentHtmlElement] which doesn't have any child HTML elements.
      * @param tagName Name of the tag.
-     * @param init Initialisation block for setting up the HTML element.
+     * @param block Initialisation block for setting up the HTML element.
      * @return A new [HTML element][HtmlElement].
      */
     @Suppress("unused")
-    fun htmlElement(tagName: String, init: HtmlElement.() -> Unit): HtmlElement {
+    fun htmlElement(tagName: String, block: HtmlElement.() -> Unit): HtmlElement {
         val htmlElement = HtmlElement()
 
         htmlElement.tagName = tagName
         children.add(htmlElement)
-        htmlElement.init()
+        htmlElement.block()
         return htmlElement
     }
 

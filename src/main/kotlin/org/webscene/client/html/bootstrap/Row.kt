@@ -19,16 +19,16 @@ class Row : ParentHtmlElement() {
     /**
      * Creates a new [column][Column] in [Row] that can contain HTML elements.
      * @param colSizes One or more column sizes to use for sizing the column.
-     * @param init Initialisation block for setting up the column.
+     * @param block Initialisation block for setting up the column.
      * @return A new [Column].
      */
     @Suppress("unused")
-    fun column(vararg colSizes: Pair<ColumnSize, Int>, init: Column.() -> Unit): Column {
+    fun column(vararg colSizes: Pair<ColumnSize, Int>, block: Column.() -> Unit): Column {
         val colElement = Column()
 
         colSizes.forEach { colElement.colSizes[it.first] = it.second }
         children.add(colElement)
-        colElement.init()
+        colElement.block()
         return colElement
     }
 

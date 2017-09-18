@@ -6,15 +6,18 @@ package org.webscene.client.html.bootstrap.style
  * @author Nick Apperley
  */
 @Suppress("unused")
-enum class ButtonStyle(val txt: String) {
+enum class ButtonStyle {
     /** Standard button. **/
-    DEFAULT("btn-default"),
+    DEFAULT,
     /** Identifies a primary action. **/
-    PRIMARY("btn-primary"),
-    SUCCESS("btn-success"),
-    INFO("btn-info"),
-    WARNING("btn-warning"),
-    DANGER("btn-danger"),
+    PRIMARY,
+    SUCCESS,
+    INFO,
+    WARNING,
+    DANGER,
     /** Turns the button into a link. **/
-    LINK("btn-link")
+    LINK
 }
+
+val ButtonStyle.txt
+    get() = "btn-${name.toLowerCase()}"

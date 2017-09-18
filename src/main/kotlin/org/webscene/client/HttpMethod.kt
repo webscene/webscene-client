@@ -1,23 +1,23 @@
-package org.webscene.client.http
+package org.webscene.client
 
 /**
  * General HTTP/S methods.
  * @property txt String representation of the method.
  * @author Nick Apperley
  */
-enum class HttpMethod(val txt: String) {
+enum class HttpMethod {
     /** Read a resource. **/
-    GET("GET"),
+    GET,
     /** Sent a request containing data. **/
-    POST("POST"),
+    POST,
     /** Upload data. **/
-    PUT("PUT"),
+    PUT,
     /** Remove a resource. **/
-    DELETE("DELETE"),
+    DELETE,
     /** Read all header information. **/
-    HEAD("HEAD"),
+    HEAD,
     /** Obtain a list of all HTTP/S methods that the server supports. **/
-    OPTIONS("OPTIONS"),
+    OPTIONS,
     /** Convert request connection into TCP/IP tunnel. **/
-    CONNECT("CONNECT")
+    CONNECT
 }

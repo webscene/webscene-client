@@ -28,9 +28,6 @@ gradle-app.setting
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 
-# Gradle:
-.idea/**/gradle.xml
-
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
 
@@ -83,6 +80,7 @@ hs_err_pid*
 src/main/java/
 src/main/resources/
 src/test/
+*.iml
 
 # Additional files/directories to unignore.
 !/gradle/wrapper/*
