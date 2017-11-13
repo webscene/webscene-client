@@ -1,25 +1,51 @@
+@file:Suppress("PropertyName")
+
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
+
 group = "org.webscene"
 version = "0.1-SNAPSHOT"
 
-val KOTLIN_VER = "1.1.4-3"
-val DOKKA_VER = "0.9.13"
+plugins {
+    `maven-publish`
+}
 
+publishing {
+    publications {
+        create("docs", MavenPublication::class.java) {
+            from(components["java"])
+            artifact(createDokkaJar)
+        }
+        create("sources", MavenPublication::class.java) {
+            from(components["java"])
+            artifact(createSourceJar)
+        }
+    }
+
+    repositories {
+        maven { url = uri("$buildDir/repository") }
+    }
+}
 
 buildscript {
+    extra["dokka-ver"] = "0.9.14"
+    extra["kotlin-ver"] = "1.1.51"
+
     repositories {
         mavenCentral()
         jcenter()
     }
 
     dependencies {
-        classpath(kotlin("gradle-plugin"))
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.13")
+        classpath(kotlin(module = "gradle-plugin", version = "${extra["kotlin-ver"]}"))
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:${extra["dokka-ver"]}")
     }
 }
+
+val DOKKA_VER = "${extra["dokka-ver"]}"
+val KOTLIN_VER = "${extra["kotlin-ver"]}"
 
 apply {
     plugin("kotlin2js")
@@ -32,41 +58,34 @@ repositories {
 }
 
 dependencies {
-    "compile"(kotlin(module = "stdlib-js", version = "1.1.4-3"))
+    "compile"(kotlin(module = "stdlib-js", version = KOTLIN_VER))
 }
 
-val dokka: DokkaTask by tasks
-val compileKotlin2Js: Kotlin2JsCompile by tasks
-
-with(dokka) {
+val dokka by tasks.getting(DokkaTask::class) {
     moduleName = "webscene-client"
     outputDirectory = "$buildDir/javadoc"
     sourceDirs = files("src/main/kotlin")
+    doFirst { File("${projectDir.absolutePath}/build/javadoc").deleteRecursively() }
 }
-
-compileKotlin2Js.kotlinOptions {
-    outputFile = "web/webscene-client.js"
-    sourceMap = true
+val compileKotlin2Js by tasks.getting(Kotlin2JsCompile::class) {
+    kotlinOptions {
+        outputFile = "${projectDir.absolutePath}/web/webscene-client.js"
+        sourceMap = true
+    }
 }
-
-dokka.doFirst {
-    File("${projectDir.absolutePath}/build/javadoc").deleteRecursively()
+val createDokkaJar by tasks.creating(Jar::class) {
+    dependsOn(dokka)
+    classifier = "javadoc"
+    from(dokka.outputDirectory)
 }
-
-task<Jar>("createSourceJar") {
+val createSourceJar by tasks.creating(Jar::class) {
     dependsOn("classes")
     classifier = "sources"
     from("src/main/kotlin")
 }
 
-task<Jar>("createDokkaJar") {
-    dependsOn("dokka")
-    classifier = "javadoc"
-    from(dokka.outputDirectory)
-}
-
 task<Jar>("createAllJarFiles") {
-    dependsOn("jar", "createSourceJar", "createDokkaJar")
+    dependsOn("jar", createSourceJar, createDokkaJar)
     println("Creating JAR files (library, sources and documentation)...")
     doLast { println("Finished creating JAR files.") }
 }

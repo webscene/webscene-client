@@ -11,11 +11,12 @@ import kotlin.browser.document
  */
 object DomEditor {
     /**
-     * Supplies a function for editing a [section][htmlSection] of the DOM.
+     * Supplies a function for editing a [section][htmlSection] of the DOM. Do note that this function doesn't support
+     * replacing an existing DOM element in a [section][htmlSection], instead use [replaceElement] function.
      * @param htmlSection The HTML section to apply the edit.
      * @return A function that will perform the edit.
      */
-    infix fun editSection(htmlSection: HtmlSection): (domElement: Element, editType: DomEditType) -> Unit {
+    fun editSection(htmlSection: HtmlSection): (domElement: Element, editType: DomEditType) -> Unit {
         /**
          * Makes changes to the HTML body section.
          * @param domElement The DOM element used in the edit.
@@ -46,7 +47,7 @@ object DomEditor {
             else -> return ::editBody
         }
 
-        // TODO: Uncomment the block below
+        // TODO: Uncomment the block below.
 //        return when(htmlSection) {
 //            HtmlSection.HEAD -> ::editHead
 //            else -> ::editBody

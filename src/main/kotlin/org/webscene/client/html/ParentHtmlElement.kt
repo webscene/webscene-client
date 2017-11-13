@@ -12,10 +12,8 @@ import kotlin.dom.createElement
  */
 open class ParentHtmlElement : ParentHtmlTag {
     override var id = ""
-    /**
-     * Contains class names.
-     */
-    val classes = mutableListOf<String>()
+    /** Contains unique class names. **/
+    val classes = mutableSetOf<String>()
     override lateinit var tagName: String
     override val attributes = mutableMapOf<String, String>()
     override var txtContent = ""
@@ -79,9 +77,7 @@ open class ParentHtmlElement : ParentHtmlTag {
             tmpAttributes.forEach { (key, value) -> setAttribute(key, value) }
             id = tmpId
             if (txtContent.isNotEmpty()) appendText(txtContent)
-            tmpChildren.forEach { child ->
-                appendChild(child.toDomElement())
-            }
+            tmpChildren.forEach { appendChild(it.toDomElement()) }
         }
     }
 

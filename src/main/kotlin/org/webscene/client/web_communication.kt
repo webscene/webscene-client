@@ -25,8 +25,9 @@ import kotlin.js.json
 fun objectsToJson(vararg pairs: Pair<String, *>) = if (pairs.isNotEmpty()) JSON.stringify(json(*pairs)) else ""
 
 /**
- * Creates a [HTTP/S client][XMLHttpRequest] to enable communication with a HTTP/S server. The request
- * header **content-type** is set to **JSON**.
+ * Creates a [HTTP/S client][XMLHttpRequest] to enable communication with a HTTP/S server via the
+ * [XMLHttpRequest API](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest). The request header
+ * **content-type** is set to **JSON**.
  * @param method [HTTP/S method][HttpMethod] to use.
  * @param url Specific HTTP/S path to use.
  * @param reqData Request data (an array of [Pair]) to send to the server.
@@ -52,8 +53,8 @@ fun httpClient(
 }
 
 /**
- * Obtains data from a HTTP/S server. If the **content-type** request header isn't set then it will default to
- * plain text type (**text/plain**).
+ * Obtains data from a HTTP/S server via the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
+ * If the **content-type** request header isn't set then it will default to plain text type (**text/plain**).
  * @param url Specific HTTP/S path to use.
  * @param method [HTTP/S method][HttpMethod] to use.
  * @param body The data to send in the HTTP/S request.

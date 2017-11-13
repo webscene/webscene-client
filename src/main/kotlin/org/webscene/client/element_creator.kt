@@ -96,6 +96,7 @@ internal fun createHtmlInput(
     val inputElement = HtmlElement()
 
     inputElement.block()
+    inputElement.tagName = "input"
     inputElement.attributes["type"] = type.txt
     if (name.isNotEmpty()) inputElement.attributes["name"] = name
     if (disabled) inputElement.attributes["disabled"] = "" else inputElement.attributes -= "disabled"

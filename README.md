@@ -68,11 +68,7 @@ To create a new DOM element (**org.w3c.dom.Element**) call the **toDomElement** 
 fun setupHomePage() {
     // ...
 
-    DomEditor.prependElementToBody(mainLayout.toDomElement())
-    DomEditor.editSection HtmlSection.BODY (
-        domElement = mainLayout, 
-        editType = EditType.PREPEND
-    )
+    DomEditor.editSection(HtmlSection.BODY) (mainLayout, DomEditType.PREPEND)
 }
 ```
 
