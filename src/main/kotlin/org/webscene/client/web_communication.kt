@@ -61,6 +61,7 @@ fun httpClient(
  * @param reqHeaders The [reqHeaders][Headers] to use in the HTTP/S request.
  * @param onResponse Callback to use when there is a response from the HTTP/S server.
  * @param onError Callback to use when a error has occurred.
+ * @param referrerPolicy The type of referrer policy to use.
  */
 fun <R : Any?> fetchData(
     url: String,
@@ -68,9 +69,10 @@ fun <R : Any?> fetchData(
     body: Any = "",
     onResponse: (Response) -> R,
     onError: (Throwable) -> R,
-    reqHeaders: Headers = Headers()
+    reqHeaders: Headers = Headers(),
+    referrerPolicy: String = "no-referrer"
 ) {
-    val request = RequestInit(method = method.name, body = body, headers = reqHeaders)
+    val request = RequestInit(method = method.name, body = body, headers = reqHeaders, referrerPolicy = referrerPolicy)
     val plainTxtType = "text/plain"
 
     if (!reqHeaders.has("content-type")) reqHeaders.append("content-type", plainTxtType)

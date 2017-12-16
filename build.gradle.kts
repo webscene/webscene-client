@@ -1,7 +1,7 @@
-@file:Suppress("PropertyName")
-
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 
@@ -30,8 +30,10 @@ publishing {
 }
 
 buildscript {
-    extra["dokka-ver"] = "0.9.14"
-    extra["kotlin-ver"] = "1.1.51"
+    val dokkaVer = "0.9.14"
+    var kotlinVer: String by extra
+
+    kotlinVer = "1.1.61"
 
     repositories {
         mavenCentral()
@@ -39,17 +41,20 @@ buildscript {
     }
 
     dependencies {
-        classpath(kotlin(module = "gradle-plugin", version = "${extra["kotlin-ver"]}"))
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:${extra["dokka-ver"]}")
+        classpath(kotlin(module = "gradle-plugin", version = kotlinVer))
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVer")
     }
 }
 
-val DOKKA_VER = "${extra["dokka-ver"]}"
-val KOTLIN_VER = "${extra["kotlin-ver"]}"
+val kotlinVer: String by extra
 
 apply {
     plugin("kotlin2js")
     plugin("org.jetbrains.dokka")
+}
+
+configure<KotlinProjectExtension> {
+    experimental.coroutines = Coroutines.ENABLE
 }
 
 repositories {
@@ -58,7 +63,7 @@ repositories {
 }
 
 dependencies {
-    "compile"(kotlin(module = "stdlib-js", version = KOTLIN_VER))
+    "compile"(kotlin(module = "stdlib-js", version = kotlinVer))
 }
 
 val dokka by tasks.getting(DokkaTask::class) {
@@ -69,7 +74,9 @@ val dokka by tasks.getting(DokkaTask::class) {
 }
 val compileKotlin2Js by tasks.getting(Kotlin2JsCompile::class) {
     kotlinOptions {
-        outputFile = "${projectDir.absolutePath}/web/webscene-client.js"
+        val fileName = "webscene-client.js"
+
+        outputFile = "${projectDir.absolutePath}/web/$fileName"
         sourceMap = true
     }
 }

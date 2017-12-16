@@ -27,8 +27,8 @@ object DomQuery {
      * @return The page ID if it is found otherwise a empty [String].
      */
     fun pageId(): String {
-        val metaElements = DomQuery.allElementsByTagName("meta").filter {
-            it.hasAttribute("pageId")
+        val metaElements = DomQuery.allElementsByTagName("meta").filter { element ->
+            element.hasAttribute("pageId")
         }
 
         return if (metaElements.isNotEmpty()) metaElements[0].getAttribute("pageId") ?: "" else ""
