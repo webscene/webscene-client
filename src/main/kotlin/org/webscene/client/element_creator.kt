@@ -1,13 +1,12 @@
 package org.webscene.client
 
-import org.webscene.client.html.HtmlCreator
-import org.webscene.client.html.HtmlElement
-import org.webscene.client.html.InputType
-import org.webscene.client.html.ParentHtmlElement
 import org.webscene.client.html.bootstrap.Column
 import org.webscene.client.html.bootstrap.ColumnSize
 import org.webscene.client.html.bootstrap.Container
 import org.webscene.client.html.bootstrap.Row
+import org.webscene.client.html.element.HtmlElement
+import org.webscene.client.html.element.ImageElement
+import org.webscene.client.html.element.ParentHtmlElement
 
 // Creates Bootstrap and HTML elements.
 // Author - Nick Apperley
@@ -50,58 +49,19 @@ internal fun createHtmlElement(tagName: String, block: HtmlElement.() -> Unit): 
     return htmlElement
 }
 
-internal fun createHtmlForm(
-    action: String,
-    method: HttpMethod,
-    block: ParentHtmlElement.() -> Unit
-): ParentHtmlElement {
-    val formElement = ParentHtmlElement()
+internal fun createHtmlImage(src: String, alt: String = "", block: ImageElement.() -> Unit): ImageElement {
+    val imgElement = ImageElement()
 
-    formElement.block()
-    formElement.attributes["action"] = action
-    formElement.attributes["method"] = method.name
-    formElement.tagName = "form"
-    return formElement
+    imgElement.block()
+    imgElement.src = src
+    imgElement.alt = alt
+    return imgElement
 }
 
-internal fun createHtmlDataList(
-    vararg listValues: String,
-    groupId: String = "",
-    listId: String,
-    inputId: String = "",
-    inputName: String
-): ParentHtmlElement = HtmlCreator.parentElement("span") {
-    if (groupId.isNotEmpty()) id = groupId
-    htmlElement("input") {
-        if (inputId.isNotEmpty()) id = inputId
-        attributes["list"] = listId
-        attributes["name"] = inputName
-    }
-    parentHtmlElement("datalist") {
-        id = listId
-        listValues.forEach { value ->
-            htmlElement("option") { attributes["value"] = value }
-        }
-    }
-}
+internal fun createHtmlHeading(level: Int = 1, block: ParentHtmlElement.() -> Unit): ParentHtmlElement {
+    val headerElement = ParentHtmlElement()
 
-internal fun createHtmlInput(
-    type: InputType,
-    disabled: Boolean = false,
-    readOnly: Boolean = false,
-    autoFocus: Boolean = false,
-    name: String = "",
-    block: HtmlElement.() -> Unit
-): HtmlElement {
-    val inputElement = HtmlElement()
-
-    inputElement.block()
-    inputElement.tagName = "input"
-    inputElement.attributes["type"] = type.txt
-    if (name.isNotEmpty()) inputElement.attributes["name"] = name
-    if (disabled) inputElement.attributes["disabled"] = "" else inputElement.attributes -= "disabled"
-    if (readOnly) inputElement.attributes["readonly"] = "" else inputElement.attributes -= "readonly"
-    if (autoFocus) inputElement.attributes["autofocus"] = "" else inputElement.attributes -= "autofocus"
-    inputElement.isClosed = true
-    return inputElement
+    headerElement.block()
+    headerElement.tagName = if (level in 1..6) "h$level" else "h1"
+    return headerElement
 }

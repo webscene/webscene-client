@@ -1,7 +1,7 @@
 package org.webscene.client.html.bootstrap
 
 import org.w3c.dom.Element
-import org.webscene.client.html.ParentHtmlElement
+import org.webscene.client.html.element.ParentHtmlElement
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.createElement
@@ -9,9 +9,10 @@ import kotlin.dom.createElement
 /**
  * Bootstrap Row element.
  * @author Nick Apperley
- * @see org.webscene.client.html.ParentHtmlElement
+ * @see org.webscene.client.html.element.ParentHtmlElement
  */
 class Row : ParentHtmlElement() {
+    @Suppress("RedundantSetter")
     override var tagName
         get() = "div"
         set(value) {}

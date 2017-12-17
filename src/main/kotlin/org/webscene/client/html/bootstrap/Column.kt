@@ -1,7 +1,7 @@
 package org.webscene.client.html.bootstrap
 
 import org.w3c.dom.Element
-import org.webscene.client.html.ParentHtmlElement
+import org.webscene.client.html.element.ParentHtmlElement
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.createElement
@@ -9,13 +9,14 @@ import kotlin.dom.createElement
 /**
  * Bootstrap Column element.
  * @author Nick Apperley
- * @see org.webscene.client.html.ParentHtmlElement
+ * @see org.webscene.client.html.element.ParentHtmlElement
  */
 class Column : ParentHtmlElement() {
     /**
      * Contains column sizes. Each entry is [column size type][ColumnSize] (key), span size (value).
      */
     val colSizes = mutableMapOf<ColumnSize, Int>()
+    @Suppress("RedundantSetter")
     override var tagName
         get() = "div"
         set(value) {}

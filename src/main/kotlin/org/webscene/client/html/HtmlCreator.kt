@@ -1,7 +1,12 @@
 package org.webscene.client.html
 
-import org.webscene.client.*
-import org.webscene.client.HttpMethod
+import org.webscene.client.createHtmlElement
+import org.webscene.client.createHtmlHeading
+import org.webscene.client.createHtmlImage
+import org.webscene.client.createParentHtmlElement
+import org.webscene.client.html.element.HtmlElement
+import org.webscene.client.html.element.ImageElement
+import org.webscene.client.html.element.ParentHtmlElement
 
 @Suppress("unused")
 /**
@@ -26,60 +31,37 @@ object HtmlCreator {
     fun element(tagName: String, block: HtmlElement.() -> Unit) = createHtmlElement(tagName, block)
 
     /**
-     * Creates a new HTML **form** element that can contain child HTML elements.
-     * @param action Relative URL to the REST resource.
-     * @param block Initialisation block for setting up the form.
-     * @return A new HTML **form** element.
+     * Creates a new HTML **span** element that can contain HTML elements, and is used to group element in a document.
+     * @param block Initialisation block for setting up the span element.
+     * @return A new span element.
      */
-    fun form(action: String, method: HttpMethod, block: ParentHtmlElement.() -> Unit): ParentHtmlElement =
-        createHtmlForm(action = action, method = method, block = block)
+    fun span(block: ParentHtmlElement.() -> Unit): ParentHtmlElement = parentElement("span", block)
 
     /**
-     * Creates a new HTML **span** element that contains a **input** and **datalist** element.
-     * @param listValues One or more values that populate the **datalist** element.
-     * @param groupId The ID to use for the **span** element that is grouping everything together.
-     * @param listId The ID to use for the **datalist** element.
-     * @param inputId The ID to use for the **input** element.
-     * @param inputName Name of the **input** element which is used for accessing data in a **form** element.
-     * @return A new HTML **span** element.
+     * Creates a new HTML **div** element that can contain HTML elements, and is used to layout elements in a document.
+     * @param block Initialisation block for setting up the div element.
+     * @return A new div element.
      */
-    fun dataList(
-        vararg listValues: String,
-        groupId: String = "",
-        listId: String,
-        inputId: String = "",
-        inputName: String
-    ): ParentHtmlElement = createHtmlDataList(
-        groupId = groupId,
-        inputId = inputId,
-        inputName = inputName,
-        listId = listId,
-        listValues = *listValues
-    )
+    fun div(block: ParentHtmlElement.() -> Unit): ParentHtmlElement = parentElement("div", block)
 
     /**
-     * Creates a new HTML **input** element that doesn't contain any HTML elements.
-     * @param type The type of **input** element to use (eg [InputType.TEXT]).
-     * @param disabled If set to true then the element is disabled.
-     * @param readOnly If set to true then the element can only be read.
-     * @param autoFocus If set to true then the element gains focus after the web page loads.
-     * @param name Unique name of the input. An HTML form uses [name] as a field name.
-     * @param block Initialisation block for setting up the input.
-     * @return A new HTML **input** element.
+     * Creates a new HTML heading that can contain HTML elements, and is used to display a heading.
+     * @param level A number between 1-6 for the size of the heading. Using a bigger number results in a smaller
+     * heading being displayed.
+     * @param block Initialisation block for setting up the heading.
+     * @return A new heading.
      */
-    fun input(
-        type: InputType,
-        disabled: Boolean = false,
-        readOnly: Boolean = false,
-        autoFocus: Boolean = false,
-        name: String = "",
-        block: HtmlElement.() -> Unit
-    ): HtmlElement = createHtmlInput(
-        type = type,
-        disabled = disabled,
-        readOnly = readOnly,
-        autoFocus = autoFocus,
-        name = name,
-        block = block
-    )
+    fun heading(level: Int = 1, block: ParentHtmlElement.() -> Unit): ParentHtmlElement = createHtmlHeading(
+        level, block)
+
+    fun header(block: ParentHtmlElement.() -> Unit): ParentHtmlElement = parentElement("header", block)
+
+    fun footer(block: ParentHtmlElement.() -> Unit): ParentHtmlElement = parentElement("footer", block)
+
+    fun image(src: String, alt: String = "", block: ImageElement.() -> Unit): ImageElement = createHtmlImage(
+        src = src, alt = alt, block = block)
+
+    fun bold(block: ParentHtmlElement.() -> Unit): ParentHtmlElement = parentElement("b", block)
+
+    fun italic(block: ParentHtmlElement.() -> Unit): ParentHtmlElement = parentElement("i", block)
 }

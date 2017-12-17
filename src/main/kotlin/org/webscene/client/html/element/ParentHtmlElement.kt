@@ -1,6 +1,8 @@
-package org.webscene.client.html
+package org.webscene.client.html.element
 
 import org.w3c.dom.Element
+import org.webscene.client.html.HtmlTag
+import org.webscene.client.html.ParentHtmlTag
 import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.appendText

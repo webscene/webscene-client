@@ -14,7 +14,7 @@ enum class HttpMethod {
     PUT,
     /** Remove a resource. **/
     DELETE,
-    /** Read all header information. **/
+    /** Read all heading information. **/
     HEAD,
     /** Obtain a list of all HTTP/S methods that the server supports. **/
     OPTIONS,

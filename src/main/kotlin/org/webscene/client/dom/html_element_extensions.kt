@@ -3,8 +3,8 @@
 package org.webscene.client.dom
 
 import org.w3c.dom.HTMLElement
-import org.webscene.client.html.HtmlElement
-import org.webscene.client.html.ParentHtmlElement
+import org.webscene.client.html.element.HtmlElement
+import org.webscene.client.html.element.ParentHtmlElement
 
 // Extensions for org.w3c.dom.HTMLElement.
 // Author - Nick Apperley
@@ -36,9 +36,9 @@ fun HTMLElement?.appendParentHtmlElement(tagName: String, block: ParentHtmlEleme
 }
 
 /**
- * Prepends a [HTML element][org.webscene.client.html.HtmlElement] to this [DOM HTML element][org.w3c.dom.HTMLElement].
+ * Prepends a [HTML element][org.webscene.client.html.element.HtmlElement] to this [DOM HTML element][org.w3c.dom.HTMLElement].
  * @param tagName Name of the tag.
- * @param block Initialisation block for setting up the [HTML element][org.webscene.client.html.HtmlElement]
+ * @param block Initialisation block for setting up the [HTML element][org.webscene.client.html.element.HtmlElement]
  */
 fun HTMLElement?.prependHtmlElement(tagName: String, block: HtmlElement.() -> Unit) {
     val htmlElement = HtmlElement()
@@ -49,9 +49,9 @@ fun HTMLElement?.prependHtmlElement(tagName: String, block: HtmlElement.() -> Un
 }
 
 /**
- * Appends a [HTML element][org.webscene.client.html.HtmlElement] to this [DOM HTML element][org.w3c.dom.HTMLElement].
+ * Appends a [HTML element][org.webscene.client.html.element.HtmlElement] to this [DOM HTML element][org.w3c.dom.HTMLElement].
  * @param tagName Name of the tag.
- * @param block Initialisation block for setting up the [HTML element][org.webscene.client.html.HtmlElement]
+ * @param block Initialisation block for setting up the [HTML element][org.webscene.client.html.element.HtmlElement]
  */
 fun HTMLElement?.appendHtmlElement(tagName: String, block: HtmlElement.() -> Unit) {
     val htmlElement = HtmlElement()

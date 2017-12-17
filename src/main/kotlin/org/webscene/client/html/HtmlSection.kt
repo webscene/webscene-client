@@ -6,7 +6,7 @@ package org.webscene.client.html
 enum class HtmlSection(val tagName: String) {
     HEAD("head"),
     BODY("body"),
-    HEADER("header"),
+    HEADER("heading"),
     FOOTER("footer"),
     NAVIGATION("nav")
 }

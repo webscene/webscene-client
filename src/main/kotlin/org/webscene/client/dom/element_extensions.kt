@@ -5,8 +5,8 @@ package org.webscene.client.dom
 import org.w3c.dom.Element
 import org.w3c.dom.asList
 import org.w3c.dom.get
-import org.webscene.client.html.HtmlElement
-import org.webscene.client.html.ParentHtmlElement
+import org.webscene.client.html.element.HtmlElement
+import org.webscene.client.html.element.ParentHtmlElement
 
 // Extensions for org.w3c.dom.Element.
 // Author - Nick Apperley

@@ -14,14 +14,12 @@ To install the library do the following:
 5. Assuming Gradle is used in your project edit your **build.gradle.kts** file, and insert the following:
 
 ```kotlin
-import java.net.URI
-
 // ...
 
 repositories {
     mavenCentral()
     maven {
-        url = URI("libs").toURL()
+        url = uri("libs")
     }
 }
 ```
@@ -41,7 +39,7 @@ Use the **org.webscene.client.html.HtmlCreator** object to create HTML elements.
 import org.webscene.client.html.HtmlCreator as html
 
 fun main(args: Array<String>) {
-    html.parentElement("div") {
+    html.div {
         parentElement("p") {
             element("b") { +"Hello World! :)" }
         }
@@ -84,7 +82,7 @@ val mainLayout = DomQuery.elementById("mainLayout")
 Queries can also be done to find elements by class name(s). Below is an example:
 
 ```kotlin
-val headerItems = DomQuery.allElementsByClassNames("header-item")
+val headerItems = DomQuery.allElementsByClassNames("heading-item")
 ```
 
 Tags can even be queried. Below is an example:
